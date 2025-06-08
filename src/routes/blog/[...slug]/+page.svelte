@@ -310,12 +310,34 @@
 
 	/* Inline code styling (not in pre blocks) - Override Tailwind Typography */
 	.blog-post-page .prose :global(code):not(:global(pre code)) {
-		background-color: rgba(255, 255, 255, 0.2) !important;
+		background-color: #1a1a1a !important;
 		padding: 0.2rem 0.4rem !important;
 		border-radius: 0.25rem !important;
 		font-size: 0.9em !important;
-		color: var(--text) !important;
+		color: #ffffff !important;
 		border: none !important;
+		font-weight: 500 !important;
+		text-decoration: none !important;
+		box-shadow: none !important;
+		outline: none !important;
+	}
+
+	/* Ultra-specific selectors to override any Tailwind defaults */
+	.blog-post-page .prose :global(*) :global(code):not(:global(pre code)),
+	.blog-post-page .prose :global(p) :global(code),
+	.blog-post-page .prose :global(li) :global(code),
+	.blog-post-page .prose :global(span) :global(code),
+	.blog-post-page .prose :global(div) :global(code) {
+		background-color: #1a1a1a !important;
+		padding: 0.2rem 0.4rem !important;
+		border-radius: 0.25rem !important;
+		font-size: 0.9em !important;
+		color: #ffffff !important;
+		border: none !important;
+		font-weight: 500 !important;
+		text-decoration: none !important;
+		box-shadow: none !important;
+		outline: none !important;
 	}
 
 	.prose :global(img) {
@@ -375,7 +397,7 @@
 
 	/* Dark mode */
 	:global(.dark) .blog-post-page .prose :global(code):not(:global(pre code)) {
-		background-color: rgba(255, 255, 255, 0.2) !important;
+		background-color: #1a1a1a !important;
 	}
 
 	:global(.dark) .prose :global(img) {
