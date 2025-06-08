@@ -170,6 +170,7 @@
 		justify-content: space-between;
 		align-items: center;
 		transition: transform 0.3s ease;
+		view-transition-name: header;
 	}
 
 	.page-header.header-hidden {

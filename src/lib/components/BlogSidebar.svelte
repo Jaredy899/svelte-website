@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	interface BlogPost {
 		_path: string;
@@ -45,6 +46,11 @@
 
 	const closeSidebar = () => {
 		dispatch('close');
+	};
+
+	const navigateToPost = async (path: string) => {
+		closeSidebar();
+		await goto(path);
 	};
 
 	const formatDate = (dateInput?: string | Date) => {
@@ -120,11 +126,14 @@
 				<ul class="posts-list">
 					{#each posts as post (post._path)}
 						<li>
-							<a href={post._path} on:click={closeSidebar} class="post-link">
+							<button 
+								class="post-link" 
+								on:click={() => navigateToPost(post._path)}
+							>
 								<div class="post-title">{post.title}</div>
 								<div class="post-date">{formatDate(post.date)}</div>
 								<div class="post-description">{post.description}</div>
-							</a>
+							</button>
 						</li>
 					{/each}
 				</ul>
@@ -227,6 +236,12 @@
 		border: 1px solid transparent;
 		border-radius: 8px;
 		transition: all 0.2s ease;
+		background: none;
+		cursor: pointer;
+		width: 100%;
+		text-align: left;
+		font-family: inherit;
+		font-size: inherit;
 	}
 
 	.post-link:hover {
