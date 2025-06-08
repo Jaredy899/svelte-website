@@ -4,6 +4,7 @@ import { marked } from 'marked';
 import matter from 'gray-matter';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { createHighlighter } from 'shiki';
 
 // Define the shape of a blog post
 interface BlogPost {
@@ -14,6 +15,82 @@ interface BlogPost {
 	published?: boolean;
 	content?: string; // We'll add the rendered HTML here
 	[key: string]: any;
+}
+
+// Create a singleton highlighter instance
+let highlighter: Awaited<ReturnType<typeof createHighlighter>> | null = null;
+
+async function getHighlighter() {
+	if (!highlighter) {
+		highlighter = await createHighlighter({
+			themes: ['github-dark', 'github-light'],
+			langs: [
+				'javascript',
+				'typescript',
+				'html',
+				'css',
+				'svelte',
+				'json',
+				'markdown',
+				'bash',
+				'shell',
+				'python',
+				'java',
+				'go',
+				'rust',
+				'sql',
+				'yaml',
+				'xml'
+			]
+		});
+	}
+	return highlighter;
+}
+
+// Configure marked with syntax highlighting
+async function configureMarked() {
+	const shiki = await getHighlighter();
+	
+	// Create a custom renderer for code blocks
+	const renderer = new marked.Renderer();
+	
+	renderer.code = function({ text, lang }: { text: string; lang?: string }) {
+		try {
+			// If no language is specified, try to detect or default to plaintext
+			const language = lang || 'text';
+			
+			// Check if the language is supported
+			const supportedLangs = shiki.getLoadedLanguages();
+			const actualLang = supportedLangs.includes(language) ? language : 'text';
+			
+			// Generate highlighted code for both themes
+			const darkCode = shiki.codeToHtml(text, {
+				lang: actualLang,
+				theme: 'github-dark'
+			});
+			
+			const lightCode = shiki.codeToHtml(text, {
+				lang: actualLang,
+				theme: 'github-light'
+			});
+			
+			// Return HTML with theme-specific classes
+			return `
+				<div class="shiki-container">
+					<div class="shiki-light">${lightCode}</div>
+					<div class="shiki-dark">${darkCode}</div>
+				</div>
+			`;
+		} catch (err) {
+			console.error('Syntax highlighting error:', err);
+			// Fallback to plain code block
+			return `<pre><code>${text}</code></pre>`;
+		}
+	};
+	
+	marked.setOptions({
+		renderer: renderer
+	});
 }
 
 async function getPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -63,6 +140,9 @@ export const load: PageServerLoad = async ({ params }) => {
 		if (!post) {
 			throw error(404, 'Post not found');
 		}
+
+		// Configure marked with syntax highlighting
+		await configureMarked();
 
 		// Parse the Markdown content to HTML
 		if (post.content) {

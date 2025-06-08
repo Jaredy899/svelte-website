@@ -9,7 +9,7 @@
 	 */
 	const setupCopyButtons = () => {
 		const codeBlocks = document.querySelectorAll(
-			'pre code, pre, .highlight code, .code-block code',
+			'pre code, pre, .highlight code, .code-block code, .shiki-container pre',
 		);
 
 		codeBlocks.forEach(codeBlock => {
@@ -21,14 +21,27 @@
 				return;
 			}
 
-			// Ensure the pre element is wrapped.
-			let wrapper = preElement.parentElement;
-			if (!wrapper || !wrapper.classList.contains('code-block-wrapper')) {
-				const newWrapper = document.createElement('div');
-				newWrapper.className = 'code-block-wrapper';
-				preElement.parentElement?.insertBefore(newWrapper, preElement);
-				newWrapper.appendChild(preElement);
-				wrapper = newWrapper;
+			// Check if this is inside a Shiki container
+			const shikiContainer = preElement.closest('.shiki-container');
+			let wrapper: HTMLElement | null = null;
+			
+			if (shikiContainer) {
+				// For Shiki containers, use the container as the wrapper
+				wrapper = shikiContainer as HTMLElement;
+			} else {
+				// Ensure the pre element is wrapped for non-Shiki code blocks
+				wrapper = preElement.parentElement;
+				if (!wrapper || !wrapper.classList.contains('code-block-wrapper')) {
+					const newWrapper = document.createElement('div');
+					newWrapper.className = 'code-block-wrapper';
+					preElement.parentElement?.insertBefore(newWrapper, preElement);
+					newWrapper.appendChild(preElement);
+					wrapper = newWrapper;
+				}
+			}
+			
+			if (!wrapper) {
+				return;
 			}
 
 			// Add the copy button if it doesn't exist.
@@ -51,9 +64,25 @@
 
 				btn.addEventListener('click', async () => {
 					try {
-						const textElement =
-							preElement.querySelector('code') || preElement;
-						const text = textElement.textContent || '';
+						let text = '';
+						
+						// Handle Shiki containers differently
+						if (shikiContainer) {
+							// Get text from the currently visible theme
+							const visiblePre = shikiContainer.querySelector('.shiki-light:not([style*="display: none"]) pre, .shiki-dark:not([style*="display: none"]) pre') as HTMLElement;
+							if (visiblePre) {
+								text = visiblePre.textContent || '';
+							} else {
+								// Fallback to any pre element in the container
+								const anyPre = shikiContainer.querySelector('pre') as HTMLElement;
+								text = anyPre?.textContent || '';
+							}
+						} else {
+							// Original logic for non-Shiki code blocks
+							const textElement = preElement.querySelector('code') || preElement;
+							text = textElement.textContent || '';
+						}
+						
 						await navigator.clipboard.writeText(text);
 
 						btn.innerHTML =
@@ -113,7 +142,8 @@
     In Svelte, styles are scoped by default. To apply these styles globally
     (which is necessary for this component), we wrap them in :global().
   */
-	:global(.code-block-wrapper) {
+	:global(.code-block-wrapper),
+	:global(.shiki-container) {
 		position: relative;
 		margin: 1rem 0;
 		border-radius: 8px;
@@ -179,7 +209,8 @@
 		box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 	}
 
-	:global(.code-block-wrapper pre) {
+	:global(.code-block-wrapper pre),
+	:global(.shiki-container pre) {
 		margin: 0 !important;
 		padding: 1rem !important;
 		padding-right: 6rem !important;
@@ -198,7 +229,8 @@
 		scrollbar-width: thin !important;
 	}
 
-	:global(.code-block-wrapper pre code) {
+	:global(.code-block-wrapper pre code),
+	:global(.shiki-container pre code) {
 		font-family: 'Fira Code', monospace !important;
 		font-size: 0.875rem !important;
 		line-height: 1.5 !important;
