@@ -9,14 +9,14 @@
 	import CopyButtonScript from '$lib/components/CopyButtonScript.svelte';
 
 	export let data: PageData;
-	const { post } = data;
+	$: post = data.post;
 
 	let sidebarOpen = false;
 	let headerVisible = true;
 	let lastScrollY = 0;
 
-	const pageTitle = post.title ? `${post.title} - Jared Cervantes` : 'Blog Post - Jared Cervantes';
-	const pageDescription = post.description || 'Blog post by Jared Cervantes';
+	$: pageTitle = post.title ? `${post.title} - Jared Cervantes` : 'Blog Post - Jared Cervantes';
+	$: pageDescription = post.description || 'Blog post by Jared Cervantes';
 
 	const toggleSidebar = () => {
 		sidebarOpen = !sidebarOpen;
@@ -96,6 +96,14 @@
 		});
 	};
 
+	// Reset scroll position and close sidebar when navigating to a new post
+	$: if (post) {
+		if (typeof window !== 'undefined') {
+			window.scrollTo(0, 0);
+		}
+		sidebarOpen = false;
+	}
+
 	onMount(() => {
 		window.addEventListener('scroll', handleScroll, { passive: true });
 	});
@@ -124,27 +132,29 @@
 	</header>
 
 	<main class="blog-content">
-		<article class="post">
-			<header class="post-header">
-				<h1>{post.title}</h1>
-				<div class="post-meta">
-					<time datetime={getDateTimeString(post.date)}>{formatDate(post.date)}</time>
-					{#if post.tags && Array.isArray(post.tags) && post.tags.length > 0}
-						<div class="tags">
-							{#each post.tags as tag}
-								<span class="tag">{tag}</span>
-							{/each}
-						</div>
-					{/if}
+		{#key post.title}
+			<article class="post">
+				<header class="post-header">
+					<h1>{post.title}</h1>
+					<div class="post-meta">
+						<time datetime={getDateTimeString(post.date)}>{formatDate(post.date)}</time>
+						{#if post.tags && Array.isArray(post.tags) && post.tags.length > 0}
+							<div class="tags">
+								{#each post.tags as tag}
+									<span class="tag">{tag}</span>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				</header>
+				<div class="prose">
+					{@html post.content}
 				</div>
-			</header>
-			<div class="prose">
-				{@html post.content}
-			</div>
-			<footer class="post-footer">
-				<a href="/" class="back-link">← Back to Home</a>
-			</footer>
-		</article>
+				<footer class="post-footer">
+					<a href="/" class="back-link">← Back to Home</a>
+				</footer>
+			</article>
+		{/key}
 	</main>
 
 	<BlogSidebar isOpen={sidebarOpen} on:close={closeSidebar} />

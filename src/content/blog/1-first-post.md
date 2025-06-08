@@ -1,6 +1,6 @@
 ---
 title: "My First Post"
-description: "My first blog post! I built this blog using Nuxt and added cool view transitions."
+description: "My first blog post! I built this blog using Svelte and added cool view transitions."
 date: "2025-05-19"
 published: true
 ---
@@ -16,7 +16,7 @@ This is going to be my thoughts on anything and everything. It's mainly a way of
 * 📰 Politics
 * 🎹 Music
 
-I built this website using [Nuxt](https://svelte.dev/) and [View Transitions](https://svelte.dev/blog/view-transitions).
+I built this website using [Svelte](https://svelte.dev/) and [View Transitions](https://svelte.dev/blog/view-transitions).
 
 This post itself is written in Markdown.
 

@@ -99,6 +99,8 @@ async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 		const contentDir = join(process.cwd(), 'src/content/blog');
 		const files = readdirSync(contentDir).filter((file: string) => file.endsWith('.md'));
 		
+
+		
 		// Find the file that matches the slug
 		// The slug is the filename without the .md extension and without number prefix
 		const matchingFile = files.find((file: string) => {
@@ -131,7 +133,9 @@ async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 }
 
 export const load: PageServerLoad = async ({ params }) => {
-	const slug = params.slug;
+	// Handle the case where slug might be an array (from [...slug] route)
+	const rawSlug = params.slug;
+	const slug = Array.isArray(rawSlug) ? rawSlug.join('/') : rawSlug;
 	
 	try {
 		const post = await getPostBySlug(slug);
