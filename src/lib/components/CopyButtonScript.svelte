@@ -232,7 +232,7 @@
 	:global(.code-block-wrapper pre code),
 	:global(.shiki-container pre code) {
 		font-family: 'Fira Code', monospace !important;
-		font-size: 0.875rem !important;
+		font-size: 1.0rem !important;
 		line-height: 1.5 !important;
 		color: var(--snippet-text) !important;
 		background: none !important;

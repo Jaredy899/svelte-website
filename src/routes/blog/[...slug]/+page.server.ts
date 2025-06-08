@@ -34,6 +34,7 @@ async function getHighlighter() {
 				'markdown',
 				'bash',
 				'shell',
+				'powershell',
 				'python',
 				'java',
 				'go',
