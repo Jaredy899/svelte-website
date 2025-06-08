@@ -308,13 +308,14 @@
 		font-weight: 600;
 	}
 
-	/* Inline code styling (not in pre blocks) */
-	.prose :global(code:not(pre code)) {
-		background-color: rgba(128, 128, 128, 0.2);
-		padding: 0.2rem 0.4rem;
-		border-radius: 0.25rem;
-		font-size: 0.9em;
-		color: var(--text);
+	/* Inline code styling (not in pre blocks) - Override Tailwind Typography */
+	.blog-post-page .prose :global(code):not(:global(pre code)) {
+		background-color: rgba(255, 255, 255, 0.2) !important;
+		padding: 0.2rem 0.4rem !important;
+		border-radius: 0.25rem !important;
+		font-size: 0.9em !important;
+		color: var(--text) !important;
+		border: none !important;
 	}
 
 	.prose :global(img) {
@@ -373,8 +374,8 @@
 	}
 
 	/* Dark mode */
-	:global(.dark) .prose :global(code:not(pre code)) {
-		background: rgba(255, 255, 255, 0.1);
+	:global(.dark) .blog-post-page .prose :global(code):not(:global(pre code)) {
+		background-color: rgba(255, 255, 255, 0.2) !important;
 	}
 
 	:global(.dark) .prose :global(img) {

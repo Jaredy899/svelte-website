@@ -198,7 +198,7 @@
 		scrollbar-width: thin !important;
 	}
 
-	:global(.code-block-wrapper code) {
+	:global(.code-block-wrapper pre code) {
 		font-family: 'Fira Code', monospace !important;
 		font-size: 0.875rem !important;
 		line-height: 1.5 !important;
@@ -218,7 +218,7 @@
 		background: #1a1a1a !important;
 	}
 
-	:global(.dark .code-block-wrapper code) {
+	:global(.dark .code-block-wrapper pre code) {
 		color: #fff !important;
 	}
 
@@ -226,7 +226,7 @@
 		background: #1a1a1a !important;
 	}
 
-	:global(html:not(.dark) .code-block-wrapper code) {
+	:global(html:not(.dark) .code-block-wrapper pre code) {
 		color: #fff !important;
 	}
 

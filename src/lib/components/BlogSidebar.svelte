@@ -90,7 +90,7 @@
 	on:click={closeSidebar}
 	role="presentation"
 >
-	<aside class="blog-sidebar" class:open={isOpen} on:click|stopPropagation role="complementary">
+	<aside class="blog-sidebar" class:open={isOpen}>
 		<div class="sidebar-header">
 			<h2>Blog Posts</h2>
 			<button
