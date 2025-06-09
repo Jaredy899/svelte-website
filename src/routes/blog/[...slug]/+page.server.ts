@@ -1,9 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { marked } from 'marked';
-import matter from 'gray-matter';
-import { readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
 import { createHighlighter } from 'shiki';
 
 // Define the shape of a blog post
@@ -96,37 +93,62 @@ async function configureMarked() {
 
 async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 	try {
-		// Get all markdown files from the content/blog directory
-		const contentDir = join(process.cwd(), 'src/content/blog');
-		const files = readdirSync(contentDir).filter((file: string) => file.endsWith('.md'));
-		
-
-		
-		// Find the file that matches the slug
-		// The slug is the filename without the .md extension and without number prefix
-		const matchingFile = files.find((file: string) => {
-			const fileSlug = file.replace('.md', '').replace(/^\d+-/, ''); // Remove number prefix for slug
-			return fileSlug === slug;
+		// Use Vite's import.meta.glob to load markdown files at build time
+		const modules = import.meta.glob('/src/content/blog/*.md', { 
+			eager: true,
+			query: '?raw',
+			import: 'default'
 		});
 		
-		if (!matchingFile) {
-			return null;
+		// Find the file that matches the slug
+		for (const [path, content] of Object.entries(modules)) {
+			const filename = path.split('/').pop() || '';
+			const fileSlug = filename.replace('.md', '').replace(/^\d+-/, ''); // Remove number prefix for slug
+			
+			if (fileSlug === slug) {
+				const fileContent = content as string;
+				
+				// Parse frontmatter manually
+				const frontmatterMatch = fileContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+				
+				if (frontmatterMatch) {
+					const frontmatterText = frontmatterMatch[1];
+					const markdownContent = frontmatterMatch[2];
+					const frontmatter: any = {};
+					
+					// Parse YAML-like frontmatter
+					const lines = frontmatterText.split('\n');
+					for (const line of lines) {
+						const match = line.match(/^(\w+):\s*(.+)$/);
+						if (match) {
+							const [, key, value] = match;
+							// Handle different value types
+							if (value === 'true') {
+								frontmatter[key] = true;
+							} else if (value === 'false') {
+								frontmatter[key] = false;
+							} else if (value.startsWith('"') && value.endsWith('"')) {
+								frontmatter[key] = value.slice(1, -1);
+							} else {
+								frontmatter[key] = value;
+							}
+						}
+					}
+					
+					// Only return published posts
+					if (frontmatter.published === false) {
+						return null;
+					}
+					
+					return {
+						...frontmatter,
+						content: markdownContent
+					} as BlogPost;
+				}
+			}
 		}
 		
-		// Read and parse the markdown file
-		const filePath = join(contentDir, matchingFile);
-		const fileContent = readFileSync(filePath, 'utf-8');
-		const { data: frontmatter, content } = matter(fileContent);
-		
-		// Only return published posts
-		if (frontmatter.published === false) {
-			return null;
-		}
-		
-		return {
-			...frontmatter,
-			content
-		} as BlogPost;
+		return null;
 	} catch (err) {
 		console.error('Error reading blog post:', err);
 		return null;

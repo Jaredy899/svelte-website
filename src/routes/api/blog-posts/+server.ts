@@ -1,8 +1,5 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import matter from 'gray-matter';
-import { readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
 
 interface BlogPost {
 	_path: string;
@@ -15,30 +12,60 @@ interface BlogPost {
 
 async function getAllPosts(): Promise<BlogPost[]> {
 	try {
-		// Get all markdown files from the content/blog directory
-		const contentDir = join(process.cwd(), 'src/content/blog');
-		const files = readdirSync(contentDir).filter((file: string) => file.endsWith('.md'));
+		// Use Vite's import.meta.glob to load markdown files at build time
+		const modules = import.meta.glob('/src/content/blog/*.md', { 
+			eager: true,
+			query: '?raw',
+			import: 'default'
+		});
 		
 		const posts: BlogPost[] = [];
 		
-		for (const file of files) {
-			const filePath = join(contentDir, file);
-			const fileContent = readFileSync(filePath, 'utf-8');
-			const { data: frontmatter } = matter(fileContent);
+		for (const [path, content] of Object.entries(modules)) {
+			// Extract filename from path
+			const filename = path.split('/').pop() || '';
 			
-			// Only include published posts
-			if (frontmatter.published !== false) {
-				const slug = file.replace('.md', '').replace(/^\d+-/, ''); // Remove number prefix for slug
-				const _path = `/blog/${slug}`;
+			// Parse frontmatter manually (simple implementation)
+			const fileContent = content as string;
+			const frontmatterMatch = fileContent.match(/^---\n([\s\S]*?)\n---/);
+			
+			if (frontmatterMatch) {
+				const frontmatterText = frontmatterMatch[1];
+				const frontmatter: any = {};
 				
-				posts.push({
-					_path,
-					title: frontmatter.title,
-					description: frontmatter.description,
-					date: frontmatter.date,
-					published: frontmatter.published !== false,
-					...frontmatter
-				} as BlogPost);
+				// Parse YAML-like frontmatter
+				const lines = frontmatterText.split('\n');
+				for (const line of lines) {
+					const match = line.match(/^(\w+):\s*(.+)$/);
+					if (match) {
+						const [, key, value] = match;
+						// Handle different value types
+						if (value === 'true') {
+							frontmatter[key] = true;
+						} else if (value === 'false') {
+							frontmatter[key] = false;
+						} else if (value.startsWith('"') && value.endsWith('"')) {
+							frontmatter[key] = value.slice(1, -1);
+						} else {
+							frontmatter[key] = value;
+						}
+					}
+				}
+				
+				// Only include published posts
+				if (frontmatter.published !== false) {
+					const slug = filename.replace('.md', '').replace(/^\d+-/, ''); // Remove number prefix for slug
+					const _path = `/blog/${slug}`;
+					
+					posts.push({
+						_path,
+						title: frontmatter.title,
+						description: frontmatter.description,
+						date: frontmatter.date,
+						published: frontmatter.published !== false,
+						...frontmatter
+					} as BlogPost);
+				}
 			}
 		}
 		
