@@ -12,7 +12,7 @@
 
 	export let isOpen: boolean;
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ close: void }>();
 
 	// Reactive state variables
 	let posts: BlogPost[] = [];

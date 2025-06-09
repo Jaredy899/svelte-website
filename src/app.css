@@ -4,7 +4,7 @@
 :root {
 	--background: #ffffff;
 	--text: #1a1a1a;
-	/* Snippet box colors */
+	/* Snippet box colors - same for both light and dark mode */
 	--snippet-bg: #1a1a1a;
 	--snippet-text: #ffffff;
 	--snippet-border: rgba(255, 255, 255, 0.05);
@@ -91,13 +91,13 @@ body {
 	transition: opacity 0.3s ease;
 }
 
-/* Light mode: show light theme, hide dark theme */
+/* Always show dark theme for consistent appearance */
 :root .shiki-light {
-	display: block;
+	display: none;
 }
 
 :root .shiki-dark {
-	display: none;
+	display: block;
 }
 
 /* Dark mode: show dark theme, hide light theme */

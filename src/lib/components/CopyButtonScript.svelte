@@ -234,7 +234,6 @@
 		font-family: 'Fira Code', monospace !important;
 		font-size: 1.0rem !important;
 		line-height: 1.5 !important;
-		color: var(--snippet-text) !important;
 		background: none !important;
 		padding: 0 !important;
 		border-radius: 0 !important;
