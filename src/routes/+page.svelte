@@ -64,7 +64,7 @@
 	</main>
 
 	<!-- Pass props and listen for events on the child component -->
-	<BlogSidebar isOpen={sidebarOpen} on:close={closeSidebar} />
+	<BlogSidebar isOpen={sidebarOpen} onclose={closeSidebar} />
 </div>
 
 <style>

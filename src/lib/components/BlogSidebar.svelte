@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, createEventDispatcher } from 'svelte';
+	import { onMount } from 'svelte';
 
 	interface BlogPost {
 		_path: string;
@@ -11,8 +11,7 @@
 	}
 
 	export let isOpen: boolean;
-
-	const dispatch = createEventDispatcher<{ close: void }>();
+	export let onclose: () => void;
 
 	// Reactive state variables
 	let posts: BlogPost[] = [];
@@ -44,7 +43,7 @@
 	});
 
 	const closeSidebar = () => {
-		dispatch('close');
+		onclose();
 	};
 
 

@@ -157,7 +157,7 @@
 		{/key}
 	</main>
 
-	<BlogSidebar isOpen={sidebarOpen} on:close={closeSidebar} />
+	<BlogSidebar isOpen={sidebarOpen} onclose={closeSidebar} />
 	
 	<!-- Copy Button Script Component -->
 	<CopyButtonScript />
