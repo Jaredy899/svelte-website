@@ -240,7 +240,7 @@
 		margin-bottom: 3rem;
 	}
 
-	.post-header h1 {
+	.prose :global(h1) {
 		font-size: 2.5rem;
 		margin-bottom: 1rem;
 		line-height: 1.2;
@@ -395,7 +395,7 @@
 
 	/* Mobile adjustments */
 	@media (max-width: 767px) {
-		.post-header h1 {
+		.prose :global(h1) {
 			font-size: 2rem;
 		}
 		
