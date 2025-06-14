@@ -13,8 +13,8 @@ interface BlogPost {
 
 async function getAllPosts(): Promise<BlogPost[]> {
 	try {
-		// Use Vite's import.meta.glob to load markdown files at build time
-		const modules = import.meta.glob('/src/content/blog/*.md', { 
+		// Use Vite's import.meta.glob to load MDX files at build time
+		const modules = import.meta.glob('/src/content/blog/*.mdx', { 
 			eager: true,
 			query: '?raw',
 			import: 'default'
@@ -55,7 +55,7 @@ async function getAllPosts(): Promise<BlogPost[]> {
 				
 				// Only include published posts
 				if (frontmatter.published !== false) {
-					const slug = filename.replace('.md', '').replace(/^\d+-/, ''); // Remove number prefix for slug
+					const slug = filename.replace('.mdx', '').replace(/^\d+-/, ''); // Remove number prefix for slug
 					posts.push({
 						...frontmatter,
 						slug
