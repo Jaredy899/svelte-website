@@ -9,7 +9,7 @@ published: true
 
 Captain Jean-Luc Picard. More than just a Starfleet captain, he was a scholar, a diplomat, a philosopher. His blend of intellect and integrity profoundly shaped my view of the world.
 
-![Captain Jean-Luc Picard](https://22yjaf7c2x.ufs.sh/f/avP9Ws4j0vyMxfN6dryCFl9oQYVuRiSDcdn7bMXpAZHqNwja)
+![Captain Jean-Luc Picard](https://qmpdliftraf4pov3.public.blob.vercel-storage.com/Picard-9oKK4setvPF2l6ZsG5OvLRbEuYYcEb.webp)
 
 Here are some key ways Captain Picard has influenced my thinking:
 
@@ -28,6 +28,6 @@ Here are some key ways Captain Picard has influenced my thinking:
 In a world that often feels chaotic and uncertain, the steady and thoughtful example of Captain Jean-Luc Picard remains a guiding light. He inspires me to approach challenges with reason and compassion, to stand firm for what is right, and to never cease exploring the vast and fascinating universe, both externally and within myself.
 
 ---
-> *In the future, I'll explore specific episodes from all of Star Trek; usually a recent one that I've watched*.
+ *In the future, I'll explore specific episodes from all of Star Trek; usually a recent one that I've watched*.
 
 ---

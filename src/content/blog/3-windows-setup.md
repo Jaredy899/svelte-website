@@ -15,7 +15,7 @@ This is how I set up my Windows machine quickly with all my presets and things h
 
 I created a powershell script to install my tweaks. It uses a GitHub Repo so I can install on any machine. Below is how I use it and what it does.
 
-![Script](https://22yjaf7c2x.ufs.sh/f/avP9Ws4j0vyM2UgDNEFDGIUbz3if4SyhWKOtNALdrJ0H1mve)
+![Script](https://qmpdliftraf4pov3.public.blob.vercel-storage.com/Jared%20Winutil-bq8y8Y2LYpMMfJYzLSyg7qRMr5KcNx.webp)
 
 ## 🚀 Installation
 
@@ -37,4 +37,4 @@ irm jaredcervantes.com/win | iex
 - **Nord Backgrounds**: Download and set up Nord-themed wallpapers
 - **Integration with [Chris Titus](https://christitus.com) Tech's [Windows Utility](https://github.com/ChrisTitusTech/winutil)**: Access additional applications and tweaks
 
-![Fastfetch](https://22yjaf7c2x.ufs.sh/f/avP9Ws4j0vyMusF0x0jtaQNJsOe8XgkpZnm9hByqMwbcRW76)
+![Fastfetch](https://qmpdliftraf4pov3.public.blob.vercel-storage.com/fastfetch-open-mDaJBjxOzk9EQUd3Fkjh3kmd8kNjIb.webp)
