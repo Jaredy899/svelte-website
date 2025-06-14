@@ -135,7 +135,6 @@
 		{#key post.title}
 			<article class="post">
 				<header class="post-header">
-					<h1>{post.title}</h1>
 					<div class="post-meta">
 						<time datetime={getDateTimeString(post.date)}>{formatDate(post.date)}</time>
 						{#if post.tags && Array.isArray(post.tags) && post.tags.length > 0}
