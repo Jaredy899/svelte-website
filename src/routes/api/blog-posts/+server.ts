@@ -6,7 +6,9 @@ interface BlogPost {
 	title?: string;
 	description?: string;
 	date?: string | Date;
+	pubDate?: string | Date;
 	published?: boolean;
+	draft?: boolean;
 	[key: string]: any;
 }
 
@@ -52,8 +54,8 @@ async function getAllPosts(): Promise<BlogPost[]> {
 					}
 				}
 				
-				// Only include published posts
-				if (frontmatter.published !== false) {
+				// Only include published posts (not drafts)
+				if (frontmatter.draft !== true) {
 					const slug = filename.replace('.md', '').replace(/^\d+-/, ''); // Remove number prefix for slug
 					const _path = `/blog/${slug}`;
 					
@@ -61,8 +63,10 @@ async function getAllPosts(): Promise<BlogPost[]> {
 						_path,
 						title: frontmatter.title,
 						description: frontmatter.description,
-						date: frontmatter.date,
-						published: frontmatter.published !== false,
+						date: frontmatter.pubDate || frontmatter.date, // Support both pubDate and date
+						pubDate: frontmatter.pubDate,
+						published: frontmatter.draft !== true,
+						draft: frontmatter.draft,
 						...frontmatter
 					} as BlogPost);
 				}
@@ -71,8 +75,8 @@ async function getAllPosts(): Promise<BlogPost[]> {
 		
 		// Sort posts by date (newest first)
 		return posts.sort((a, b) => {
-			const dateA = new Date(a.date || 0);
-			const dateB = new Date(b.date || 0);
+			const dateA = new Date(a.date || a.pubDate || 0);
+			const dateB = new Date(b.date || b.pubDate || 0);
 			return dateB.getTime() - dateA.getTime();
 		});
 	} catch (err) {

@@ -1,8 +1,8 @@
 ---
 title: "Early Episode Psychosis"
 description: "What I learned from my recent conference"
-date: "2025-06-08"
-published: true
+pubDate: 2025-06-08
+draft: false
 ---
 
 # Early Psychosis Care: Insights from Missouri

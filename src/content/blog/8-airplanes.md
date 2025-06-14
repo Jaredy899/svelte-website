@@ -1,8 +1,8 @@
 ---
 title: "The Magic of Flight: A Personal Journey Through Aviation"
 description: "A heartfelt reflection on my lifelong passion for aviation, inspired by my grandfather and nurtured through flight simulators"
-date: "2025-07-06"
-published: false
+pubDate: 2025-07-06
+draft: true
 ---
 
 # ✈️ The Magic of Flight

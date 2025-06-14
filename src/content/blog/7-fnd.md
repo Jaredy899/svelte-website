@@ -1,8 +1,8 @@
 ---
 title: "My Ongoing Journey with FND: Still Searching for Answers"
 description: "My Journey with FND"
-date: "2025-06-29"
-published: false
+pubDate: 2025-06-29
+draft: true
 ---
 
 # 🌱 My Ongoing Journey with FND: Still Searching for Answers

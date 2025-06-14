@@ -1,8 +1,8 @@
 ---
-title: "The Endless Quest for the Perfect Browser: A Chronicle"
-description: "My ongoing search for the ideal web browser."
-date: "2025-08-17"
-published: false
+title: "Case Management: A Cornerstone of First Episode Psychosis Recovery"
+description: "The importance of case management in mental health recovery."
+pubDate: 2025-08-17
+draft: true
 ---
 
 # Case Management: A Cornerstone of First Episode Psychosis Recovery

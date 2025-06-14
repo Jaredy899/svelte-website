@@ -1,8 +1,8 @@
 ---
 title: "My First Post"
 description: "My first blog post! I built this blog using Svelte and added cool view transitions."
-date: "2025-05-19"
-published: true
+pubDate: 2025-05-19
+draft: false
 ---
 
 # Welcome to My Blog

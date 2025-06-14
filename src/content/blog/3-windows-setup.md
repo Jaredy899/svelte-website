@@ -1,8 +1,8 @@
 ---
 title: "My Windows Setup"
 description: "How I set up my Windows machine"
-date: "2025-06-01"
-published: true
+pubDate: 2025-06-01
+draft: false
 ---
 
 # 🖥️ My Windows Setup
