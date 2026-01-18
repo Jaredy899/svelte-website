@@ -1,13 +1,16 @@
 ---
 title: "My Windows Setup"
 description: "How I set up my Windows machine"
-pubDate: 2025-06-01
+pubDate: 2025-06-02
 draft: false
 ---
+# 🖥️ My Windows Setup
 
-## 🖥️ My Windows Setup
+---
 
 ![Windows](https://avatars.githubusercontent.com/u/6154722?s=100&v=4)
+
+---
 
 This is how I set up my Windows machine quickly with all my presets and things how I like it.
 

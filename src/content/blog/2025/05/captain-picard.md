@@ -28,6 +28,6 @@ Here are some key ways Captain Picard has influenced my thinking:
 In a world that often feels chaotic and uncertain, the steady and thoughtful example of Captain Jean-Luc Picard remains a guiding light. He inspires me to approach challenges with reason and compassion, to stand firm for what is right, and to never cease exploring the vast and fascinating universe, both externally and within myself.
 
 ---
- *In the future, I'll explore specific episodes from all of Star Trek; usually a recent one that I've watched*.
+> *In the future, I'll explore specific episodes from all of Star Trek; usually a recent one that I've watched*.
 
 ---

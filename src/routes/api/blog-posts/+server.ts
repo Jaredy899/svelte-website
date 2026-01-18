@@ -14,8 +14,8 @@ interface BlogPost {
 
 async function getAllPosts(): Promise<BlogPost[]> {
 	try {
-		// Use Vite's import.meta.glob to load MDX files at build time
-		const modules = import.meta.glob('/src/content/blog/*.mdx', { 
+		// Use Vite's import.meta.glob to load MD files at build time (supports subfolders)
+		const modules = import.meta.glob('/src/content/blog/**/*.md', { 
 			eager: true,
 			query: '?raw',
 			import: 'default'
@@ -24,8 +24,9 @@ async function getAllPosts(): Promise<BlogPost[]> {
 		const posts: BlogPost[] = [];
 		
 		for (const [path, content] of Object.entries(modules)) {
-			// Extract filename from path
+			// Extract slug from filename (supports any folder depth like 2025/05/post-name.md)
 			const filename = path.split('/').pop() || '';
+			const slug = filename.replace('.md', '');
 			
 			// Parse frontmatter manually (simple implementation)
 			const fileContent = content as string;
@@ -56,7 +57,6 @@ async function getAllPosts(): Promise<BlogPost[]> {
 				
 				// Only include published posts (not drafts)
 				if (frontmatter.draft !== true) {
-					const slug = filename.replace('.mdx', '').replace(/^\d+-/, ''); // Remove number prefix for slug
 					const _path = `/blog/${slug}`;
 					
 					posts.push({

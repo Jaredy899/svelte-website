@@ -13,8 +13,8 @@ interface BlogPost {
 
 async function getAllPosts(): Promise<BlogPost[]> {
 	try {
-		// Use Vite's import.meta.glob to load MDX files at build time
-		const modules = import.meta.glob('/src/content/blog/*.mdx', { 
+		// Use Vite's import.meta.glob to load MD files at build time (supports subfolders)
+		const modules = import.meta.glob('/src/content/blog/**/*.md', { 
 			eager: true,
 			query: '?raw',
 			import: 'default'
@@ -23,8 +23,9 @@ async function getAllPosts(): Promise<BlogPost[]> {
 		const posts: BlogPost[] = [];
 		
 		for (const [path, content] of Object.entries(modules)) {
-			// Extract filename from path
+			// Extract slug from filename (supports any folder depth like 2025/05/post-name.md)
 			const filename = path.split('/').pop() || '';
+			const slug = filename.replace('.md', '');
 			
 			// Parse frontmatter manually (simple implementation)
 			const fileContent = content as string;
@@ -53,9 +54,8 @@ async function getAllPosts(): Promise<BlogPost[]> {
 					}
 				}
 				
-				// Only include published posts
-				if (frontmatter.published !== false) {
-					const slug = filename.replace('.mdx', '').replace(/^\d+-/, ''); // Remove number prefix for slug
+				// Only include published posts (draft !== true)
+				if (frontmatter.draft !== true) {
 					posts.push({
 						...frontmatter,
 						slug
@@ -64,10 +64,10 @@ async function getAllPosts(): Promise<BlogPost[]> {
 			}
 		}
 		
-		// Sort posts by date (newest first)
+		// Sort posts by date (newest first) - support both pubDate and date
 		return posts.sort((a, b) => {
-			const dateA = new Date(a.date || 0);
-			const dateB = new Date(b.date || 0);
+			const dateA = new Date(a.pubDate || a.date || 0);
+			const dateB = new Date(b.pubDate || b.date || 0);
 			return dateB.getTime() - dateA.getTime();
 		});
 	} catch (err) {

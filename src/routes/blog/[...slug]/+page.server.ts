@@ -93,8 +93,8 @@ async function configureMarked() {
 
 async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 	try {
-		// Use Vite's import.meta.glob to load MDX files at build time
-		const modules = import.meta.glob('/src/content/blog/*.mdx', { 
+		// Use Vite's import.meta.glob to load MD files at build time (supports subfolders)
+		const modules = import.meta.glob('/src/content/blog/**/*.md', { 
 			eager: true,
 			query: '?raw',
 			import: 'default'
@@ -102,8 +102,9 @@ async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 		
 		// Find the file that matches the slug
 		for (const [path, content] of Object.entries(modules)) {
+			// Extract slug from filename (supports any folder depth like 2025/05/post-name.md)
 			const filename = path.split('/').pop() || '';
-			const fileSlug = filename.replace('.mdx', '').replace(/^\d+-/, ''); // Remove number prefix for slug
+			const fileSlug = filename.replace('.md', '');
 			
 			if (fileSlug === slug) {
 				const fileContent = content as string;
@@ -135,8 +136,8 @@ async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 						}
 					}
 					
-					// Only return published posts
-					if (frontmatter.published === false) {
+					// Only return published posts (draft !== true)
+					if (frontmatter.draft === true) {
 						return null;
 					}
 					
